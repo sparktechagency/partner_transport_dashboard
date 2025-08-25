@@ -20,7 +20,12 @@ const PartnerDetails = () => {
             </div>
             <div>
                 <div className='flex flex-col justify-center items-center'>
-                    <img src={`${imageUrl}${getPartnerDetails?.data?.profile_image}`} className='h-16 w-16 rounded-full object-cover' alt="" />
+                    {/* <div className='rounded-full overflow-hidden'> */}
+
+                        <Image className='w-36 rounded-full' width={100} height={100} src={`${imageUrl}${getPartnerDetails?.data?.profile_image}`} alt="" />
+                    {/* </div> */}
+
+                    {/* <img src={`${imageUrl}${getPartnerDetails?.data?.profile_image}`} className='h-16 w-16 rounded-full object-cover' alt="" /> */}
                     <p className='text-xl font-medium mt-2'>{getPartnerDetails?.data?.name}</p>
                 </div>
 
@@ -32,8 +37,8 @@ const PartnerDetails = () => {
                 {
                     basicInfo ? <div className='max-w-lg mx-auto mt-10 space-y-3'>
                         <p className='flex items-center justify-between'><span className='font-medium'>Email:</span> <span className='text-gray-500'>{getPartnerDetails?.data?.email}</span></p>
-                        <p className='flex items-center justify-between'><span className='font-medium'>Phone Number:</span> <span className='text-gray-500'>{getPartnerDetails?.data?.phone_number}</span></p>
-                        <p className='flex items-center justify-between'><span className='font-medium'>Location:</span> <span className='text-gray-500'>{}{getPartnerDetails?.data?.city},{getPartnerDetails?.data?.state},{getPartnerDetails?.data?.country}</span></p>
+                        <p className='flex items-center justify-between'><span className='font-medium'>Phone Number:</span> <span className='text-gray-500'>{getPartnerDetails?.data?.phone_number ? getPartnerDetails?.data?.phone_number : "N/A"}</span></p>
+                        <p className='flex items-center justify-between'><span className='font-medium'>Location:</span> <span className='text-gray-500'>{ }{getPartnerDetails?.data?.city},{getPartnerDetails?.data?.state},{getPartnerDetails?.data?.country}</span></p>
 
                         <div>
                             <p>Vehicle Photos: </p>
@@ -46,16 +51,16 @@ const PartnerDetails = () => {
                         <div className='grid grid-cols-2 gap-5'>
                             <div className='w-full my-2 '>
                                 <p className='my-2 font-medium text-xl'>Vehicle license plate:</p>
-                                <Image className='w-44 h-36'  width={250} height={300} src={`${imageUrl}${getPartnerDetails?.data?.licensePlateImage}`} alt="" />
+                                <Image className='w-44 h-36' width={250} height={300} src={`${imageUrl}${getPartnerDetails?.data?.licensePlateImage}`} alt="" />
                                 <p className='my-5 font-medium text-xl'>Vehicle insurance photo:</p>
-                                <Image className='w-full h-36'  width={250} height={300} src={`${imageUrl}${getPartnerDetails?.data?.vehicleInsuranceImage}`} alt="" />
+                                <Image className='w-full h-36' width={250} height={300} src={`${imageUrl}${getPartnerDetails?.data?.vehicleInsuranceImage}`} alt="" />
 
                             </div>
                             <div className='w-full my-2'>
                                 <p className='my-2 font-medium text-xl'>Driving License:</p>
-                                <Image className='w-44 h-36'  width={250} height={300} src={`${imageUrl}${getPartnerDetails?.data?.drivingLicenseImage}`} alt="" />
+                                <Image className='w-44 h-36' width={250} height={300} src={`${imageUrl}${getPartnerDetails?.data?.drivingLicenseImage}`} alt="" />
                                 <p className='my-5 font-medium text-xl'>Vehicle registration card :</p>
-                                <Image className='w-full h-36'  width={250} height={300} src={`${imageUrl}${getPartnerDetails?.data?.vehicleRegistrationCardImage}`} alt="" />
+                                <Image className='w-full h-36' width={250} height={300} src={`${imageUrl}${getPartnerDetails?.data?.vehicleRegistrationCardImage}`} alt="" />
 
                             </div>
                         </div>

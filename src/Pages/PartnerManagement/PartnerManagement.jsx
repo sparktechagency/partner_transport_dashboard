@@ -14,6 +14,7 @@ import { useGetAdminProfileQuery } from '../../redux/api/authApi'
 import { useGetMessageQuery } from '../../redux/api/userManagementApi'
 import ChatModal from '../../Components/ChatModal/ChatModal'
 import { RiDeleteBin6Line } from 'react-icons/ri'
+import { useGetAllVariableQuery } from '../../redux/api/variableManagementApi'
 const PartnerManagement = () => {
   const [form] = Form.useForm()
   const [page, setPage] = useState(1)
@@ -23,6 +24,9 @@ const PartnerManagement = () => {
   const [sendNoticeId, setSendNoticeId] = useState('')
 
   // Partner Management api
+    const { data: allVariables } = useGetAllVariableQuery()
+  const perDollarMexicanPeso = allVariables?.data?.perDollarMexicanPeso || 20
+  // console.log(perDollarMexicanPeso);
   const { data: getAllPartner } = useGetAllPartnerQuery({ page, searchTerms });
   const [sendNoticePartner] = useSendNoticePartnerMutation()
   const [blockUnblockPartner] = useBlockUnBlockPartnerMutation()
@@ -91,6 +95,8 @@ const PartnerManagement = () => {
         routing: partner,
         dob: partner?.date_of_birth,
         walletBalance: partner?.wallet?.toFixed(2),
+        walletBalanceMxn: (partner?.wallet * perDollarMexicanPeso).toFixed(2),
+
         // businessName: 'Governance structures',
         // website: 'www.google.com',
         line: partner?.routing_number,
@@ -142,9 +148,25 @@ const PartnerManagement = () => {
     //   key: "location",
     // },
     {
-      title: "Wallet Balance",
+      title: "Wallet Balance (USD)",
       dataIndex: "walletBalance",
       key: "walletBalance",
+      render: (text, record) => {
+        return (
+          <p>{record?.walletBalance} USD</p>
+        )
+      }
+    },
+    {
+      title: "Wallet Balance (MXN)",
+      dataIndex: "walletBalanceMxn",
+      key: "walletBalanceMxn",
+      render: (text, record) => {
+        return (
+          <p>{record?.walletBalanceMxn} MXN</p>
+        )
+      }
+
     },
 
     {

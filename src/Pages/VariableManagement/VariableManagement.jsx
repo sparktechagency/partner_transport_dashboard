@@ -11,7 +11,7 @@ const VariableManagement = () => {
   const { data: allVariables } = useGetAllVariableQuery()
   const [updateVariable] = useUpdateVariableMutation()
 
-
+// console.log(allVariables?.data?.perDollarMexicanPeso * 10)
 
 
   const data = [

@@ -46,7 +46,7 @@ const auctionManagement = baseApi.injectEndpoints({
         //     }
         // }),
         getAllAuction: builder.query({
-            query: ({ auctionStatus, page, itemType, selectedCategory, status, search }) => {
+            query: ({ auctionStatus, page, itemType, selectedCategory, status, search , order }) => {
                 const queryParams = {
                     page,
                     searchTerm: search,
@@ -54,6 +54,8 @@ const auctionManagement = baseApi.injectEndpoints({
                     service: itemType,
                     category: selectedCategory,
                     status,
+                    order
+
                 };
                 // console.log(selectedCategory);
                 const queryString = buildQueryString(queryParams);

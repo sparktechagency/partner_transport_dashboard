@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import { CiSearch } from 'react-icons/ci';
-import { useGetConversationMessageQuery,  useGetMessagesConversationQuery } from '../../redux/api/variableManagementApi';
+import { useGetConversationMessageQuery, useGetMessagesConversationQuery } from '../../redux/api/variableManagementApi';
 import { imageUrl } from '../../redux/api/baseApi';
-
 
 
 const ChatBubble = ({ message, senderId, senderImage, receiverImage }) => {
@@ -16,6 +15,7 @@ const ChatBubble = ({ message, senderId, senderImage, receiverImage }) => {
           src={`${isSelf ? `${imageUrl}${senderImage}` : `${imageUrl}${receiverImage}`}`}
           size="large"
           className={isSelf ? 'ml-2 h-10 rounded-full w-10' : 'mr-2 h-10 rounded-full w-10'}
+          alt="profile"
         />
         <div className={`flex flex-col max-w-xs ${isSelf ? 'bg-black text-white' : 'bg-[#5C5C5C] text-white'} p-3 rounded-lg`}>
           <p className="whitespace-pre-wrap">{message.text}</p>
@@ -34,26 +34,23 @@ const ReviewConversation = () => {
   const [receiverId, setReceiverId] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const { data: getConversation } = useGetConversationMessageQuery(searchTerm)
-
-
-
-  // console.log(getConversation);
-
-
   const { data: getMessage } = useGetMessagesConversationQuery({ senderId, receiverId })
+
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    // scroll down when messages load or change
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [getMessage?.data]);
+
   const handleConversation = (person) => {
     setSenderId(person[0]?._id)
     setReceiverId(person[1]?._id)
     setReceiverImage(person[1]?.profile_image)
     setSenderImage(person[0]?.profile_image)
     setSelectedConversation(person)
-
   }
 
-
-
-
-  // console.log(senderId, receiverId);
   return (
     <div className='bg-white p-5 rounded-md h-[86vh]'>
       <div className="flex justify-between item-center pb-5">
@@ -84,7 +81,11 @@ const ReviewConversation = () => {
             getConversation?.data?.map(participant => {
               const isSelected = selectedConversation === participant?.participants;
               return (
-                <div onClick={() => handleConversation(participant?.participants)} className={`flex  cursor-pointer items-center gap-5 py-4  border p-2 mb-2 shadow-md ${isSelected ? "bg-white" : "bg-gray-200"}`}>
+                <div 
+                  key={participant._id}
+                  onClick={() => handleConversation(participant?.participants)} 
+                  className={`flex cursor-pointer items-center gap-5 py-4 border p-2 mb-2 shadow-md ${isSelected ? "bg-white" : "bg-gray-200"}`}
+                >
                   <div className='flex'>
                     <img className='h-10 rounded-full w-10 ' src={`${imageUrl}${participant?.participants[0]?.profile_image}`} alt="" />
                     <img className='ml-[-10px] h-10 rounded-full w-10' src={`${imageUrl}${participant?.participants[1]?.profile_image}`} alt="" />
@@ -94,27 +95,34 @@ const ReviewConversation = () => {
               )
             })
           }
-
-
         </div>
 
         {/* Right Sidebar - Conversation Overview */}
         <div className='col-span-9 max-h-[77vh] overflow-y-auto'>
           <div className='text-xl font-medium border-b pb-2'>Conversation Overview</div>
           <div className="p-6 bg-white rounded-lg space-y-4">
-
             {
-              getMessage?.data ?
+              getMessage?.data ? (
                 <>
-                  {getMessage?.data?.conversation?.messages.map((msg) => (
-                    <ChatBubble key={msg._id} message={msg} senderId={senderId} receiverImage={receiverImage} senderImage={senderImage} />
+                  {getMessage?.data?.conversation?.messages?.slice()?.reverse()?.map((msg) => (
+                    <ChatBubble 
+                      key={msg._id} 
+                      message={msg} 
+                      senderId={senderId} 
+                      receiverImage={receiverImage} 
+                      senderImage={senderImage} 
+                    />
                   ))}
+                  {/* invisible div for auto-scroll */}
+                  <div ref={bottomRef} />
                 </>
-                : <div className='flex items-center justify-center min-h-[60vh] '><p className='text-4xl font-semibold'>Select a conversation</p></div>
+              ) : (
+                <div className='flex items-center justify-center min-h-[60vh]'>
+                  <p className='text-4xl font-semibold'>Select a conversation</p>
+                </div>
+              )
             }
-
-
-
+            
           </div>
         </div>
       </div>

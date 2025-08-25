@@ -13,6 +13,8 @@ import {
   useGetConversationQuery,
 } from "../../redux/api/auctionManagementApi";
 import { imageUrl } from "../../redux/api/baseApi";
+import { useGetAllVariableQuery } from "../../redux/api/variableManagementApi";
+import { render } from "react-dom";
 
 const AuctionManagement = () => {
   const [conversationIds, setConversationIds] = useState({});
@@ -20,11 +22,15 @@ const AuctionManagement = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [itemType, setItemType] = useState("");
+  const [orderStatus, setOrderStatus] = useState("dec");
   const [page, setPage] = useState(1);
   const [auctionStatus, setAuctionStatus] = useState(() => {
     return localStorage.getItem("auctionStatus") || "move";
   });
   const [selectedCategory, setSelectedCategory] = useState("");
+  const { data: allVariables } = useGetAllVariableQuery()
+  const dollarToPeso = allVariables?.data?.perDollarMexicanPeso || 20;
+
   const { data: getAllAuction } = useGetAllAuctionQuery({
     auctionStatus,
     page,
@@ -32,6 +38,7 @@ const AuctionManagement = () => {
     selectedCategory,
     status,
     search,
+    order : orderStatus
   });
   const { data: getAllCategory } = useGetAllCategoryQuery({
     auctionStatus,
@@ -40,6 +47,8 @@ const AuctionManagement = () => {
   const [senderId, setSendId] = useState();
   const [receiverId, setReceiveId] = useState();
   const [refundValue, setRefundValue] = useState();
+
+  console.log(orderStatus)
 
   // Save the selected status to local storage whenever it changes
   useEffect(() => {
@@ -66,6 +75,11 @@ const AuctionManagement = () => {
       title: "Sl No",
       dataIndex: "slno",
       key: "slno",
+    },
+    {
+      title: "Auction ID",
+      dataIndex: "id",
+      key: "id",
     },
     {
       title: "Date",
@@ -115,9 +129,24 @@ const AuctionManagement = () => {
       key: "category",
     },
     {
-      title: "Win Bid",
+      title: "Win Bid (USD)",
       dataIndex: "winBid",
       key: "winBid",
+      render: (text, record) => {
+        return (
+          <p>{record?.winBid} USD</p>
+        )
+      }
+    },
+    {
+      title: "Win Bid (mexican peso)",
+      dataIndex: "winBidPeso",
+      key: "winBidPeso",
+      render: (text, record) => {
+        return (
+          <p>{record?.winBidPeso} MXN</p>
+        )
+      }
     },
     {
       title: "Action",
@@ -131,11 +160,10 @@ const AuctionManagement = () => {
             }
             onClick={() => handleRefund(record)}
             className={`border rounded-full text-center px-5 py-1 
-    ${
-      record?.actionRefund === "paid" && record?.status !== "completed"
-        ? "text-red-500 cursor-pointer border-red-500"
-        : "text-gray-600 border-gray-600 cursor-not-allowed"
-    }`}
+    ${record?.actionRefund === "paid" && record?.status !== "completed"
+                ? "text-red-500 cursor-pointer border-red-500"
+                : "text-gray-600 border-gray-600 cursor-not-allowed"
+              }`}
           >
             Refund
           </button>
@@ -149,16 +177,15 @@ const AuctionManagement = () => {
       render: (text, record) => {
         return (
           <div
-            className={` text-center border rounded-full py-1 
-                        ${
-                          record?.status === "completed"
-                            ? " border-[#2AB9A4] text-[#2AB9A4]"
-                            : record?.status === "accepted"
-                            ? "border-[#338BFF] text-[#338BFF]"
-                            : record?.status === "claimed"
-                            ? "border-red-500 text-red-500"
-                            : "border-yellow-400 text-yellow-400"
-                        }`}
+            className={` text-center  border rounded-full py-1 
+                        ${record?.status === "completed"
+                ? " border-[#2AB9A4] text-[#2AB9A4]"
+                : record?.status === "accepted"
+                  ? "border-[#338BFF] text-[#338BFF]"
+                  : record?.status === "claimed"
+                    ? "border-red-500 text-red-500"
+                    : "border-yellow-400 text-yellow-400"
+              }`}
           >
             {record?.status}
           </div>
@@ -225,6 +252,7 @@ const AuctionManagement = () => {
       itemType: auction?.service,
       category: auction?.category[0]?.category,
       winBid: auction?.winBid?.toFixed(2),
+      winBidPeso: (auction?.winBid * dollarToPeso).toFixed(2),
       actionRefund: auction?.paymentStatus,
       status: auction?.status,
     };
@@ -237,12 +265,12 @@ const AuctionManagement = () => {
 
   // Category select options
   const category = Array.isArray(getAllCategory?.data?.data)
-  ? getAllCategory.data.data.map((cat, i) => ({
+    ? getAllCategory.data.data.map((cat, i) => ({
       value: cat?._id,
       label: cat?.category,
       key: i + 1,
     }))
-  : [];
+    : [];
 
   /** item category and status search functionality */
   const handleChange = (value) => {
@@ -257,6 +285,9 @@ const AuctionManagement = () => {
   const handleStatus = (value) => {
     setStatus(value);
   };
+  const handleShowOrder = (value) => {
+    setOrderStatus(value)
+  }
   return (
     <div>
       <div className=" justify-between flex">
@@ -284,9 +315,8 @@ const AuctionManagement = () => {
               setAuctionStatus("");
               setPage(1);
             }}
-            className={`border px-8 py-1 border-black rounded-full cursor-pointer ${
-              auctionStatus === "" ? "bg-black text-white" : ""
-            }`}
+            className={`border px-8 py-1 border-black rounded-full cursor-pointer ${auctionStatus === "" ? "bg-black text-white" : ""
+              }`}
           >
             All
           </div>
@@ -295,9 +325,8 @@ const AuctionManagement = () => {
               setAuctionStatus("move");
               setPage(1);
             }}
-            className={`border px-8 py-1 border-black rounded-full cursor-pointer ${
-              auctionStatus === "move" ? "bg-black text-white" : ""
-            }`}
+            className={`border px-8 py-1 border-black rounded-full cursor-pointer ${auctionStatus === "move" ? "bg-black text-white" : ""
+              }`}
           >
             Move
           </div>
@@ -306,9 +335,8 @@ const AuctionManagement = () => {
               setAuctionStatus("sell");
               setPage(1);
             }}
-            className={`border px-8 py-1 border-black rounded-full cursor-pointer ${
-              auctionStatus === "sell" ? "bg-black text-white" : ""
-            }`}
+            className={`border px-8 py-1 border-black rounded-full cursor-pointer ${auctionStatus === "sell" ? "bg-black text-white" : ""
+              }`}
           >
             Sell
           </div>
@@ -358,6 +386,17 @@ const AuctionManagement = () => {
                 { value: "completed", label: "completed" },
                 { value: "cancel", label: "cancel" },
               ]}
+            />
+          </div>
+          <div>
+            <p className="mb-2">Select Order</p>
+            <Select
+            defaultValue={"dec"}
+            onChange={handleShowOrder}
+            options={[
+              {value: "dec", label: "Ascending"},
+              {value: "asc", label: "Descending"},
+            ]}
             />
           </div>
         </div>

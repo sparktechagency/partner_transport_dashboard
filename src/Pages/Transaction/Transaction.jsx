@@ -9,6 +9,8 @@ import ConversationModal from '../../Components/ConversationModal/ConversationMo
 import { useGetAllTransactionQuery } from '../../redux/api/transactionApi'
 import { imageUrl } from '../../redux/api/baseApi'
 import { useGetConversationQuery } from '../../redux/api/auctionManagementApi'
+import { useGetAllVariableQuery } from '../../redux/api/variableManagementApi'
+import { render } from 'react-dom'
 const Transaction = () => {
   const [page, setPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
@@ -18,6 +20,8 @@ const Transaction = () => {
 
 
   //-------- transaction all api ---------//
+  const { data: allVariables } = useGetAllVariableQuery()
+  const perDollarMexicanPeso = allVariables?.data?.perDollarMexicanPeso || 20
   const { data: getAllTransaction } = useGetAllTransactionQuery({ page, searchTerm })
   // console.log(getAllTransaction?.data?.result);
 
@@ -62,7 +66,20 @@ const Transaction = () => {
     //   title: "Category", dataIndex: 'category', key: 'category'
     // },
     {
-      title: "Win Bid", dataIndex: 'winBid', key: 'winBid'
+      title: "Win Bid (USD)", dataIndex: 'winBid', key: 'winBid',
+      render: (text, record) => {
+        return (
+          <p>{record?.winBid} USD</p>
+        )
+      }
+    },
+    {
+      title: "Win Bid (MXN)", dataIndex: 'winBid', key: 'winBid', 
+      render: (text, record) => {
+        return (
+          <p>{(record?.winBid * perDollarMexicanPeso).toFixed(2)} MXN</p>
+        )
+      }
     },
 
     {
@@ -81,10 +98,10 @@ const Transaction = () => {
       title: "Chat", dataIndex: 'key', key: 'key', render: (_, record) => {
         return (
           <div className='flex items-center '>
-            <div style={{ color: "white" }} onClick={() =>{
+            <div style={{ color: "white" }} onClick={() => {
               setSendId(record?.senderId)
               setReceiveId(record?.receiverId)
-               setOpenConversationModal(true)
+              setOpenConversationModal(true)
 
             }} className=' cursor-pointer bg-yellow-500 text-white p-2 rounded-md'><MdOutlineMessage size={20} /></div>
           </div>
@@ -100,8 +117,8 @@ const Transaction = () => {
       {
         id: transaction?._id,
         orderId: transaction?.transactionId,
-        senderId : transaction?.payUser?._id,
-        receiverId : transaction?.receiveUser?._id,
+        senderId: transaction?.payUser?._id,
+        receiverId: transaction?.receiveUser?._id,
         date: transaction?.createdAt?.split('T')[0],
         userImg: `${imageUrl}${transaction?.payUser?.profile_image}`,
         userName: transaction?.payUser?.name,

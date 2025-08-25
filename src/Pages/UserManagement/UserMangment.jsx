@@ -182,7 +182,7 @@ const UserManagement = () => {
       accountHolderName: user?.bank_holder_name,
       bankName : user?.bank_name,
       // HolderType: user?.bank_holder_type,
-      accountNumber: user?.bank_holder_type,
+      accountNumber: user?.bank_account_number,
       routing: user?.routing_number,
       dob: user?.date_of_birth,
       
@@ -196,7 +196,6 @@ const UserManagement = () => {
     }
   })?.reverse()
 
-  // console.log(singleUser);
 
 
   const handleSendNotice = (data) => {
