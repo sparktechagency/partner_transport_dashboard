@@ -10,7 +10,7 @@ export default defineConfig({
     },
   },
   server: {
-    host: "143.198.238.107",
+    // host: "https://backend.xmoveit.com",
     port: "3001",
     //  host: "10.10.20.31",
     //  port: "3001",

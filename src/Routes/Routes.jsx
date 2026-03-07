@@ -28,6 +28,7 @@ import TransactionDetails from "../Pages/TransactionDetails/TransactionDetails";
 import FileClaim from "../Pages/FileClaim/FileClaim";
 import Ticket from "../Pages/Ticket/Ticket";
 import PrivateRoutes from "./PrivateRoutes";
+import PublicRoutes from "./PublicRoutes";
 import SupervisionDashboard from "../Pages/SupervisionDashboard/SupervisionDashboard";
 import CompletedTask from "../Pages/CompletedTask/CompletedTask";
 import ActiveAdminsPage from "../Pages/ActiveAdminsPage/ActiveAdminsPage";
@@ -42,7 +43,7 @@ export const router = createBrowserRouter([
         path: '/',
         element: 
         <PrivateRoutes>
-            <MainLayout />,
+            <MainLayout />
          </PrivateRoutes>,
         children: [
             {
@@ -179,19 +180,19 @@ export const router = createBrowserRouter([
     },
     {
         path: '/auth/login',
-        element: <Login />
+        element: <PublicRoutes><Login /></PublicRoutes>
     },
     {
         path: '/auth/forgot-password',
-        element: <ForgetPassword />
+        element: <PublicRoutes><ForgetPassword /></PublicRoutes>
     },
     {
         path: '/auth/otp',
-        element: <Otp />
+        element: <PublicRoutes><Otp /></PublicRoutes>
     },
     {
         path: '/auth/update-password',
-        element: <UpdatePassword />
+        element: <PublicRoutes><UpdatePassword /></PublicRoutes>
     },
     
 ])

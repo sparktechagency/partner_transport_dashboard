@@ -6,6 +6,7 @@ import { useGetAllBankTransferQuery, usePaymentBankTransferMutation } from '../.
 import { imageUrl } from '../../redux/api/baseApi';
 import { toast } from 'sonner';
 import UserOpenModals from '../../Components/UserOpenModal/UserModalsOpen';
+import Loading from '../../Components/Loading/Loading';
 
 const BankTransfer = () => {
   const [page, setPage] = useState(1)
@@ -14,7 +15,7 @@ const BankTransfer = () => {
   const [openUserModal, setUserOpenModals] = useState(false)
   const [openBankTransferModal, setOpenBankTransferModal] = useState(false)
   // Get All API
-  const { data: getAllBankTransfer } = useGetAllBankTransferQuery(page);
+  const { data: getAllBankTransfer, isLoading } = useGetAllBankTransferQuery(page);
   const [paymentBankTransfer] = usePaymentBankTransferMutation()
 
   const onFinish = (values) => {
@@ -133,7 +134,7 @@ const BankTransfer = () => {
     <div className='p-2 bg-white rounded-md'>
       <PageName name={'Bank Transfer'} />
       <div className='mt-5'>
-        <Table dataSource={dataSource} columns={columns} className="custom-pagination" pagination={false} />
+        {isLoading ? <Loading type="table" /> : <Table dataSource={dataSource} columns={columns} className="custom-pagination" pagination={false} />}
         <div className='flex items-center justify-center py-2'>
           <Pagination
             onChange={(page) => setPage(page)}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Loading from '../../Components/Loading/Loading'
 import ProfileUpdateRequest from '../../Components/ProfileUpdateRequest/ProfileUpdateRequest';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -9,7 +10,7 @@ const ProfileUpdatePage = () => {
 
 
     //------ALL API ------//
-  const { data: getPendingPartner } = useGetPendingPartnerQuery()
+  const { data: getPendingPartner, isLoading } = useGetPendingPartnerQuery()
 
 // console.log(getPendingPartner?.data?.meta);
     const onChange = (page) => {
@@ -46,7 +47,7 @@ const ProfileUpdatePage = () => {
                 <Link to={-1}><FaArrowLeft className='text-[var(--primary-color)]' size={20} /></Link>
                 <p className='font-semibold '>Partner Registration/ Update Request</p>
             </div>
-            <ProfileUpdateRequest dataSource={formattedTableData} />
+            {isLoading ? <Loading type="table" /> : <ProfileUpdateRequest dataSource={formattedTableData} />}
             {/* <div className='mt-2 flex items-center justify-center'>
                 <Pagination current={current}
                     onChange={onChange}

@@ -7,11 +7,12 @@ import { useGetCompletedTaskQuery, useGetTskCountQuery } from '../../redux/api/s
 import { imageUrl } from '../../redux/api/baseApi';
 import { useGetAdminProfileQuery } from '../../redux/api/authApi';
 import { io } from 'socket.io-client';
+import Loading from '../../Components/Loading/Loading';
 
 const SupervisionDashboard = () => {
 
     // Get all APIs
-    const { data: getAllTask } = useGetTskCountQuery()
+    const { data: getAllTask, isLoading } = useGetTskCountQuery()
     const { data: getCompletedTask } = useGetCompletedTaskQuery({ searchTerm : '', page : 1 });
   
     const data = [
@@ -26,7 +27,7 @@ const SupervisionDashboard = () => {
 
 
       useEffect(() => {
-        const socket = io("http://143.198.238.107:5050/", {
+        const socket = io("https://backend.xmoveit.com/", {
           query: {
             id: getAdmins?.data?._id,
             role : getAdmins?.data?.authId?.role
@@ -64,7 +65,7 @@ const SupervisionDashboard = () => {
     })
     return (
         <div className=' p-4 rounded-md'>
-            <div className='flex items-center justify-between gap-10'>
+            {isLoading ? <Loading type="dashboard" /> : <div className='flex items-center justify-between gap-10'>
                 <div className='bg-white w-full py-8 rounded-md text-center '>
                     <p className='text-2xl'>Active Admins</p>
                     <p className='text-2xl font-semibold'>{activeAdmin?.length}</p>
@@ -81,7 +82,7 @@ const SupervisionDashboard = () => {
                     <p className='text-2xl'>Tasks in Progress</p>
                     <p className='text-2xl font-semibold'>{getAllTask?.data?.tasksInProgress}</p>
                 </div>
-            </div>
+            </div>}
 
             <div className='grid grid-cols-12 gap-5 mt-5'>
                 <div className='col-span-8 bg-white rounded-md '>

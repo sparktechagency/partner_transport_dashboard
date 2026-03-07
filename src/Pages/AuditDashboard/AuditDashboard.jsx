@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Cell, Pie, PieChart } from 'recharts'
 import { Select } from 'antd'
+import Loading from '../../Components/Loading/Loading'
 import MostCreateEventUserTable from '../../Components/MostCreateEventUserTable/MostCreateEventUserTable'
 import MostTaskCompleteAdminTable from '../../Components/MostTaskCompleteAdminTable/MostTaskCompleteAdminTable'
 import { useEventCreateRateQuery, useGetMostCreateUserQuery, useGetMostTaskCompletedAdminsQuery } from '../../redux/api/auditDashboardApi'
@@ -24,7 +25,7 @@ const AuditDashboard = () => {
 
 
     // All APIs
-    const { data: getAllEventRate } = useEventCreateRateQuery({year ,month: selectedMonth})
+    const { data: getAllEventRate, isLoading } = useEventCreateRateQuery({year ,month: selectedMonth})
     const { data: mostCreateUser } = useGetMostCreateUserQuery({})
     const { data : getMostTaskAdmin} = useGetMostTaskCompletedAdminsQuery({page : 1 ,searchTerm : "" })
 
@@ -72,7 +73,7 @@ const AuditDashboard = () => {
 
             <div className='grid grid-cols-12 gap-5 mt-5'>
                 <div className='col-span-8  rounded-md '>
-                    <div className='flex items-center justify-between gap-5'>
+                    {isLoading ? <Loading type="dashboard" /> : <div className='flex items-center justify-between gap-5'>
 
                         <div className='bg-white w-full py-8 rounded-md text-center '>
                             <p className='text-2xl'>Total Number of Event</p>
@@ -82,7 +83,7 @@ const AuditDashboard = () => {
                             <p className='text-2xl'>Most Common Event Type</p>
                             <p className='text-2xl font-semibold'>{getAllEventRate?.data?.mostCommonEventType}</p>
                         </div>
-                    </div>
+                    </div>}
                     <div className='bg-white mt-5 rounded-md'>
                         <div className='flex items-center justify-between px-5'>
                             <div className='mt-2 ml-2 text-xl font-medium'>Most Event Created By Users</div>

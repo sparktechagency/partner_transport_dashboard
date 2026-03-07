@@ -2,13 +2,14 @@ import React, { useEffect } from 'react'
 import PageName from '../../Components/Shared/PageName'
 
 import { Table, Input, Button, Form } from 'antd';
+import Loading from '../../Components/Loading/Loading';
 import { useGetAllVariableQuery, useUpdateVariableMutation } from '../../redux/api/variableManagementApi';
 import { toast } from 'sonner';
 
 const VariableManagement = () => {
   const [form] = Form.useForm()
   // All API
-  const { data: allVariables } = useGetAllVariableQuery()
+  const { data: allVariables, isLoading } = useGetAllVariableQuery()
   const [updateVariable] = useUpdateVariableMutation()
 
 // console.log(allVariables?.data?.perDollarMexicanPeso * 10)
@@ -51,36 +52,40 @@ const VariableManagement = () => {
         <span className="text-lg font-semibold ">Variable</span>
         <span className="text-lg font-semibold">Input</span>
       </div>
-      <Form form={form} onFinish={handleSubmit} className="space-y-4">
-        {data.map((item, index) => (
-          <div key={item.key} className="flex items-center space-x-4">
-            {/* Serial Number */}
-            <span className="w-20 text-center  text-gray-500">{String(index + 1).padStart(2, '0')}</span>
+      {isLoading ? (
+        <Loading type="form" />
+      ) : (
+        <Form form={form} onFinish={handleSubmit} className="space-y-4">
+          {data.map((item, index) => (
+            <div key={item.key} className="flex items-center space-x-4">
+              {/* Serial Number */}
+              <span className="w-20 text-center  text-gray-500">{String(index + 1).padStart(2, '0')}</span>
 
-            {/* Label */}
-            <span className="flex-1 pl-96 text-left  mx-auto font-medium">{item.label}</span>
+              {/* Label */}
+              <span className="flex-1 pl-96 text-left  mx-auto font-medium">{item.label}</span>
 
-            {/* Input Field */}
-            <Form.Item
-              name={item.name}
-              label={item?.placeholder}
-              className=""
-            // rules={[{ required: true, message: `Please input ${item.label.toLowerCase()}` }]}
-            >
-              <Input
-                placeholder={item.placeholder}
-                addonAfter={item.addonAfter}
-                className="border-gray-300 rounded-md"
-              />
-            </Form.Item>
+              {/* Input Field */}
+              <Form.Item
+                name={item.name}
+                label={item?.placeholder}
+                className=""
+              // rules={[{ required: true, message: `Please input ${item.label.toLowerCase()}` }]}
+              >
+                <Input
+                  placeholder={item.placeholder}
+                  addonAfter={item.addonAfter}
+                  className="border-gray-300 rounded-md"
+                />
+              </Form.Item>
+            </div>
+          ))}
+          <div className="text-center mt-8">
+            <button htmlType="submit" className="bg-black text-white px-10 py-2 rounded-full">
+              Save
+            </button>
           </div>
-        ))}
-        <div className="text-center mt-8">
-          <button htmlType="submit" className="bg-black text-white px-10 py-2 rounded-full">
-            Save
-          </button>
-        </div>
-      </Form>
+        </Form>
+      )}
     </div>
   )
 }

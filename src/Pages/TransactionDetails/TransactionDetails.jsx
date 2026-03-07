@@ -10,15 +10,16 @@ import img7 from '../../assets/images/mob3.png'
 import { useParams } from 'react-router-dom'
 import { useGetSingleTransactionQuery } from '../../redux/api/transactionApi'
 import { imageUrl } from '../../redux/api/baseApi'
+import Loading from '../../Components/Loading/Loading'
 const TransactionDetails = () => {
     const { id } = useParams()
-    const { data: getSingleData } = useGetSingleTransactionQuery(id)
+    const { data: getSingleData, isLoading } = useGetSingleTransactionQuery(id)
     console.log(getSingleData?.data);
     return (
         <div className='bg-white rounded-md p-5'>
             <PageName name={'Details'} />
 
-            <div className='max-w-4xl mx-auto mt-10'>
+            {isLoading ? <Loading type="detail" /> : <div className='max-w-4xl mx-auto mt-10'>
                 <div className='flex items-center justify-between'>
                     <p className='font-medium'>User Name : </p>
                     <p>{getSingleData?.data?.payUser?.name}</p>
@@ -76,7 +77,7 @@ const TransactionDetails = () => {
                 </div>
 
 
-            </div>
+            </div>}
 
         </div>
     )

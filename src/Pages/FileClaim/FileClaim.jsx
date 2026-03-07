@@ -10,6 +10,7 @@ import ComplainDetailsModal from '../../Components/ComplainDetailsModal'
 import { useGetAllFileClaimQuery, useUpdateClaimedStatusMutation } from '../../redux/api/supportApi'
 import { imageUrl } from '../../redux/api/baseApi'
 import { toast } from 'sonner'
+import Loading from '../../Components/Loading/Loading'
 
 const FileClaim = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -21,7 +22,7 @@ const FileClaim = () => {
 
   // console.log(complainDetails);
   // All APIs
-  const { data: getAllFileClaim } = useGetAllFileClaimQuery({ searchTerm, page });
+  const { data: getAllFileClaim, isLoading } = useGetAllFileClaimQuery({ searchTerm, page });
   const [updateClaimedStatus] = useUpdateClaimedStatusMutation()
 
 
@@ -193,7 +194,7 @@ const FileClaim = () => {
 
       <div className='mt-5'>
 
-        <Table columns={columns} dataSource={formattedTableData} className="custom-pagination" pagination={false} />
+        {isLoading ? <Loading type="table" /> : <Table columns={columns} dataSource={formattedTableData} className="custom-pagination" pagination={false} />}
         <div className='flex justify-center mt-5'>
           <Pagination
             current={page}

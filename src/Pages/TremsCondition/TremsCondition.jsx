@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import { IoArrowBackSharp } from 'react-icons/io5';
 import { useGetTermsConditionsQuery, useUpdateTermsConditionMutation } from '../../redux/api/settingApi';
 import { toast } from 'sonner';
+import Loading from '../../Components/Loading/Loading';
 const TremsCondition = () => {
 
 
-  const { data: getTerms } = useGetTermsConditionsQuery();
+  const { data: getTerms, isLoading: isDataLoading } = useGetTermsConditionsQuery();
   const [updateAbout] = useUpdateTermsConditionMutation()
 
 
@@ -47,14 +48,14 @@ const TremsCondition = () => {
       </div>
 
       <div className="custom-jodit-editor mx-5 ">
-        <JoditEditor
+        {isDataLoading ? <Loading type="editor" /> : <JoditEditor
           ref={editor}
           value={content}
           config={config}
           tabIndex={1}
           onBlur={newContent => setContent(newContent)}
           onChange={newContent => { }}
-        />
+        />}
         <div className='flex items-center   justify-center mt-5'>
           <button onClick={handleTerms} className='bg-[var(--primary-color)]  text-white px-4 py-2 rounded-full test'>Save Changes</button>
         </div>

@@ -7,12 +7,13 @@ import { CiSearch } from 'react-icons/ci'
 import { useGetCompletedTaskQuery } from '../../redux/api/supervisorDashboardApi'
 import { imageUrl } from '../../redux/api/baseApi'
 import { Pagination } from 'antd'
+import Loading from '../../Components/Loading/Loading'
 const CompletedTask = () => {
     const [page, setPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('')
 
 
-    const { data: getCompletedTask } = useGetCompletedTaskQuery({ searchTerm, page });
+    const { data: getCompletedTask, isLoading } = useGetCompletedTaskQuery({ searchTerm, page });
     const pageSize = getCompletedTask?.data?.meta?.limit || 10;
 
 
@@ -53,7 +54,7 @@ const CompletedTask = () => {
                     </span>
                 </div>
             </div>
-            <AdminTaskTable dataSource={dataSource} />
+            {isLoading ? <Loading type="table" /> : <AdminTaskTable dataSource={dataSource} />}
             <div className='flex justify-center'>
                 <Pagination
                     onChange={(page) => setPage(page)}

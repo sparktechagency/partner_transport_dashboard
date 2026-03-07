@@ -11,6 +11,7 @@ import {
   useUpdateCategoryMutation,
 } from "../../redux/api/categoryManagementApi";
 import { toast } from "sonner";
+import Loading from '../../Components/Loading/Loading';
 
 const CategoryManagement = () => {
   const [form] = Form.useForm();
@@ -22,7 +23,7 @@ const CategoryManagement = () => {
 
   // category management api
   const [createCategory] = useCrateCategoryMutation();
-  const { data: allCategory } = useGetCategoryQuery(categoryStatus);
+  const { data: allCategory, isLoading } = useGetCategoryQuery(categoryStatus);
   const [deleteCategory] = useDeleteCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
 
@@ -217,7 +218,7 @@ const CategoryManagement = () => {
         </div>
       </div>
       <div className="mt-5 mx-auto max-w-7xl">
-        <Table columns={columns} dataSource={data} pagination={false} />
+        {isLoading ? <Loading type="table" /> : <Table columns={columns} dataSource={data} pagination={false} />}
       </div>
       {/* Edit Category modal */}
       <Modal

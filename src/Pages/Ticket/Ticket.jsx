@@ -9,6 +9,7 @@ import ReplyModal from "../../Components/ReplyModal";
 import ViewTicketModal from "../../Components/ViewTicketModal";
 import { useGetAllTicketQuery } from "../../redux/api/supportApi";
 import { imageUrl } from "../../redux/api/baseApi";
+import Loading from '../../Components/Loading/Loading';
 
 const Ticket = () => {
   const [openReplyModal, setOpenReplyModal] = useState(false);
@@ -19,7 +20,7 @@ const Ticket = () => {
   const [page, setPage] = useState(1);
 
   // All APIs
-  const { data: getAllTicket } = useGetAllTicketQuery({ page, search });
+  const { data: getAllTicket, isLoading } = useGetAllTicketQuery({ page, search });
 
 
   const formattedTableData = getAllTicket?.data?.tickets?.map((ticket, i) => {
@@ -158,12 +159,12 @@ const Ticket = () => {
       </div>
 
       <div className="mt-5">
-        <Table
+        {isLoading ? <Loading type="table" /> : <Table
           columns={columns}
           dataSource={formattedTableData}
           className="custom-pagination"
           pagination={false}
-        />
+        />}
         <div className="flex justify-center pt-5">
           <Pagination
             onChange={(page) => setPage(page)} 

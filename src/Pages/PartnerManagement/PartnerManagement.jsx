@@ -15,6 +15,7 @@ import { useGetMessageQuery } from '../../redux/api/userManagementApi'
 import ChatModal from '../../Components/ChatModal/ChatModal'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { useGetAllVariableQuery } from '../../redux/api/variableManagementApi'
+import Loading from '../../Components/Loading/Loading'
 const PartnerManagement = () => {
   const [form] = Form.useForm()
   const [page, setPage] = useState(1)
@@ -27,7 +28,7 @@ const PartnerManagement = () => {
     const { data: allVariables } = useGetAllVariableQuery()
   const perDollarMexicanPeso = allVariables?.data?.perDollarMexicanPeso || 20
   // console.log(perDollarMexicanPeso);
-  const { data: getAllPartner } = useGetAllPartnerQuery({ page, searchTerms });
+  const { data: getAllPartner, isLoading } = useGetAllPartnerQuery({ page, searchTerms });
   const [sendNoticePartner] = useSendNoticePartnerMutation()
   const [blockUnblockPartner] = useBlockUnBlockPartnerMutation()
   const [deletePartner] = useDeletePartnerMutation() 
@@ -269,7 +270,7 @@ const PartnerManagement = () => {
 
       {/* User Management table */}
       <div className='mt-5'>
-        <Table dataSource={formattedTable} columns={columns} className="custom-pagination" pagination={false} />
+        {isLoading ? <Loading type="table" /> : <Table dataSource={formattedTable} columns={columns} className="custom-pagination" pagination={false} />}
         <div className='flex items-center justify-center py-2'>
           <Pagination
             onChange={(page) => setPage(page)}

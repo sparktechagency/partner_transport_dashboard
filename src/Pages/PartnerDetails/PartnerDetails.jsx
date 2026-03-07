@@ -4,11 +4,12 @@ import { Link, useParams } from 'react-router-dom'
 import { useGetPartnerDetailsQuery } from '../../redux/api/partnerManagementApi'
 import { imageUrl } from '../../redux/api/baseApi'
 import { Image } from 'antd'
+import Loading from '../../Components/Loading/Loading'
 
 const PartnerDetails = () => {
     const { id } = useParams()
     //Get partner details api
-    const { data: getPartnerDetails } = useGetPartnerDetailsQuery(id)
+    const { data: getPartnerDetails, isLoading } = useGetPartnerDetailsQuery(id)
     console.log(getPartnerDetails?.data?.country);
 
     const [basicInfo, setBasicInfo] = useState(true)
@@ -18,7 +19,7 @@ const PartnerDetails = () => {
                 <Link to={-1}><FaArrowLeft size={20} className='text-blue-600' /></Link>
                 <p className='font-semibold text-[20px]'>Partner Details</p>
             </div>
-            <div>
+            {isLoading ? <Loading type="detail" /> : <div>
                 <div className='flex flex-col justify-center items-center'>
                     {/* <div className='rounded-full overflow-hidden'> */}
 
@@ -85,7 +86,7 @@ const PartnerDetails = () => {
                         <p className='flex items-center justify-between'><span className=''>Postal Code :</span> <span className='text-gray-500'>{getPartnerDetails?.data?.address_postal_code}</span></p>
                     </div>
                 }
-            </div>
+            </div>}
         </div>
     )
 }

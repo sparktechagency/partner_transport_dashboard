@@ -9,11 +9,12 @@ import ProfileUpdateRequest from './Components/ProfileUpdateRequest/ProfileUpdat
 import './App.css'
 import { useGetPendingPartnerQuery, useOverviewDashboardQuery } from './redux/api/dashboardHomeApi'
 import { imageUrl } from './redux/api/baseApi'
+import Loading from './Components/Loading/Loading'
 function App() {
 
   // all API
-  const { data: getOverView } = useOverviewDashboardQuery();
-  const { data: getPendingPartner } = useGetPendingPartnerQuery()
+  const { data: getOverView, isLoading: isOverviewLoading } = useOverviewDashboardQuery();
+  const { data: getPendingPartner, isLoading: isPartnerLoading } = useGetPendingPartnerQuery()
 
   // 
   const data = [
@@ -78,11 +79,15 @@ function App() {
       {/*  statistics card for dashboard home page */}
       <div className="grid grid-cols-4 justify-center items-center gap-5">
         {
-          data?.map((item, index) => <div className='w-full h-full flex justify-center items-center  flex-col gap-3 py-7 bg-[#FEFEFE] p-2 rounded-md' key={index}>
-            <p className='text-2xl font-medium'>{item?.title}</p>
-            <img src={item?.icon} className='my-[5px]' />
-            <p className='text-3xl font-semibold'>{item?.count}</p>
-          </div>)
+          isOverviewLoading
+            ? <div className='col-span-4'><Loading type="card" /></div>
+            : data?.map((item, index) => (
+              <div className='w-full h-full flex justify-center items-center flex-col gap-3 py-7 bg-[#FEFEFE] p-2 rounded-md' key={index}>
+                <p className='text-2xl font-medium'>{item?.title}</p>
+                <img src={item?.icon} className='my-[5px]' />
+                <p className='text-3xl font-semibold'>{item?.count}</p>
+              </div>
+            ))
         }
       </div>
 
@@ -90,11 +95,9 @@ function App() {
       <div className='grid grid-cols-2 mt-5 gap-5'>
         <div className='w-full h-full bg-white p-4 rounded-md'>
           <IncomeOverview />
-
         </div>
         <div className='w-full h-full bg-white p-4 rounded-md'>
           <DailyOverViewChart />
-
         </div>
       </div>
 
@@ -108,7 +111,10 @@ function App() {
           </Link>
         </div>
 
-        <ProfileUpdateRequest dataSource={formattedTableData} />
+        {isPartnerLoading
+          ? <Loading type="table" />
+          : <ProfileUpdateRequest dataSource={formattedTableData} />
+        }
       </div>
 
 

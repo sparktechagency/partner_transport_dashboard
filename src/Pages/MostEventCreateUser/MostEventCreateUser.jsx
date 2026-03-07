@@ -4,10 +4,11 @@ import { CiSearch } from 'react-icons/ci'
 import MostCreateEventUserTable from '../../Components/MostCreateEventUserTable/MostCreateEventUserTable'
 import { useGetMostCreateUserQuery } from '../../redux/api/auditDashboardApi'
 import { Pagination } from 'antd'
+import Loading from '../../Components/Loading/Loading'
 const MostEventCreateUser = () => {
     const [searchQuery, setSearchQuery] = useState('')
     const [page, setPage] = useState(1)
-    const { data: mostCreateUser } = useGetMostCreateUserQuery({ searchQuery, page })
+    const { data: mostCreateUser, isLoading } = useGetMostCreateUserQuery({ searchQuery, page })
     // console.log(mostCreateUser?.data);
 
     const dataSource = mostCreateUser?.data?.users?.map((user, i) => {
@@ -43,7 +44,7 @@ const MostEventCreateUser = () => {
                 </div>
             </div>
             <div>
-                <MostCreateEventUserTable dataSource={dataSource} pagination={false} />
+                {isLoading ? <Loading type="table" /> : <MostCreateEventUserTable dataSource={dataSource} pagination={false} />}
                 <div className='flex items-center justify-center'>
                     <Pagination
                         onChange={(page) => setPage(page)}

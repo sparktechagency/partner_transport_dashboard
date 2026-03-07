@@ -7,13 +7,14 @@ import img from '../../assets/images/conver1.png'
 import { useGetAdminProfileQuery } from '../../redux/api/authApi'
 import { io } from 'socket.io-client'
 import { imageUrl } from '../../redux/api/baseApi'
+import Loading from '../../Components/Loading/Loading'
 
 const ActiveAdminsPage = () => {
     const [activeAdmin, setActiveAdmin] = useState([])
-    const { data: getAdmins } = useGetAdminProfileQuery()
+    const { data: getAdmins, isLoading } = useGetAdminProfileQuery()
     // console.log(getAdmins?.data?._id);
     useEffect(() => {
-      const socket = io("http://143.198.238.107:5050/", {
+      const socket = io("https://backend.xmoveit.com/", {
         query: {
           id: getAdmins?.data?._id,
         },
@@ -63,7 +64,7 @@ const ActiveAdminsPage = () => {
                     </span>
                 </div> */}
             </div>
-            <ActiveAdminsTable dataSource={dataSource} pagination={false} />
+            {isLoading ? <Loading type="table" /> : <ActiveAdminsTable dataSource={dataSource} pagination={false} />}
         </div>
     )
 }

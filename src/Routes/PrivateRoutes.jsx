@@ -2,17 +2,23 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useGetAdminProfileQuery } from '../redux/api/authApi';
-import { Skeleton } from 'antd';
+import Loading from '../Components/Loading/Loading';
+
+const ALLOWED_ROLES = ["ADMIN", "SUPER_ADMIN"];
 
 const PrivateRoutes = ({children}) => {
     const location = useLocation();
-    const {data :  getAdminProfile , isError, isLoading } = useGetAdminProfileQuery() 
-    // console.log(getAdminProfile?.data?.authId?.role);
+    const {data :  getAdminProfile , isError, isLoading } = useGetAdminProfileQuery()
+
     if(isLoading){
-        return <div className="flex items-center justify-center"><Skeleton active /></div>
+        return <Loading fullPage />
     }
-    if(isError || getAdminProfile?.data?.authId?.role !== "ADMIN" ){
-        return <Navigate to={'/auth/login'} state={{from  : location}} />
+
+    const role = getAdminProfile?.data?.authId?.role;
+
+    if(isError || !ALLOWED_ROLES.includes(role)){
+        localStorage.removeItem('token');
+        return <Navigate to={'/auth/login'} state={{from  : location}} replace />
     }
   return ( <>{children}</>);
 }

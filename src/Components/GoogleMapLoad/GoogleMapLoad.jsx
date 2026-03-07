@@ -10,7 +10,7 @@ const GoogleMapLoad = ({ children }) => {
 
   return (
     <LoadScript
-      googleMapsApiKey="AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4"
+      googleMapsApiKey="AIzaSyDfMF4ewLnSHTnvP5x7Tj4MXKdExbg98RY"
     //   onLoad={handleLoad}
     //   onError={() => console.error("Error loading Google Maps API")}
     >

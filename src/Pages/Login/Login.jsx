@@ -6,9 +6,9 @@ import { toast } from 'sonner';
 
 const Login = () => {
 
-    const [loginAdmin] = useLoginAdminMutation()
+    const [loginAdmin, { isLoading }] = useLoginAdminMutation()
     const navigate = useNavigate()
-    // handle login data 
+    // handle login data
     const onFinish = (values) => {
         const data ={
             email: values?.email,
@@ -146,6 +146,8 @@ const Login = () => {
                             <Button
                                 type="primary"
                                 htmlType="submit"
+                                loading={isLoading}
+                                disabled={isLoading}
                                 className="rounded-3xl mt-8 bg-[var(--primary-color)] py-5"
                                 block
                                 style={{
@@ -156,7 +158,7 @@ const Login = () => {
 
                                 }}
                             >
-                                
+
                                     Sign In
                             </Button>
                         </Form.Item>

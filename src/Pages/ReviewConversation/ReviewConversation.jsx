@@ -4,6 +4,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { CiSearch } from 'react-icons/ci';
 import { useGetConversationMessageQuery, useGetMessagesConversationQuery } from '../../redux/api/variableManagementApi';
 import { imageUrl } from '../../redux/api/baseApi';
+import Loading from '../../Components/Loading/Loading';
 
 
 const ChatBubble = ({ message, senderId, senderImage, receiverImage }) => {
@@ -33,7 +34,7 @@ const ReviewConversation = () => {
   const [senderId, setSenderId] = useState('')
   const [receiverId, setReceiverId] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
-  const { data: getConversation } = useGetConversationMessageQuery(searchTerm)
+  const { data: getConversation, isLoading } = useGetConversationMessageQuery(searchTerm)
   const { data: getMessage } = useGetMessagesConversationQuery({ senderId, receiverId })
 
   const bottomRef = useRef(null);
@@ -78,7 +79,7 @@ const ReviewConversation = () => {
         <div className='col-span-3 mt-2 max-h-[80vh] overflow-y-auto'>
           <p className='bg-[#f2f2f2] border-b font-medium text-xl p-2'>Conversation Betweens</p>
           {
-            getConversation?.data?.map(participant => {
+            isLoading ? <Loading type="list" /> : getConversation?.data?.map(participant => {
               const isSelected = selectedConversation === participant?.participants;
               return (
                 <div 
@@ -95,6 +96,7 @@ const ReviewConversation = () => {
               )
             })
           }
+
         </div>
 
         {/* Right Sidebar - Conversation Overview */}

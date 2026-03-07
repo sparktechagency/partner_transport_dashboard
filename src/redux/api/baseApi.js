@@ -5,9 +5,13 @@ const baseQuery = fetchBaseQuery({
     // baseUrl : 'http://10.10.20.11:5051/',
     // baseUrl : 'http://143.198.238.107:5050/',
     prepareHeaders  :  (headers)=>{
-        const token = JSON.parse(localStorage.getItem('token'));
-        if(token){
-            headers.set('Authorization' , `Bearer ${token}`)
+        try {
+            const token = JSON.parse(localStorage.getItem('token'));
+            if(token){
+                headers.set('Authorization' , `Bearer ${token}`)
+            }
+        } catch {
+            localStorage.removeItem('token');
         }
         return headers
     }

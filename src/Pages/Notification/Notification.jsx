@@ -6,9 +6,10 @@ import {
   useGetAllNotificationQuery,
 } from "../../redux/api/settingApi";
 import { toast } from "sonner";
+import Loading from '../../Components/Loading/Loading';
 
 const Notification = () => {
-  const { data: getAllNotification } = useGetAllNotificationQuery();
+  const { data: getAllNotification, isLoading } = useGetAllNotificationQuery();
   const [deleteNotification] = useDeleteNotificationMutation();
 
   const data = getAllNotification?.data?.result?.map((data, i) => {
@@ -71,12 +72,12 @@ const Notification = () => {
         </h3>
         {/* <div onClick={()=> handleSeenNotification()} className="cursor-pointer border-black border-b">Read All</div> */}
       </div>
-      <Table
+      {isLoading ? <Loading type="table" /> : <Table
         columns={columns}
         dataSource={data}
         pagination={false}
         className="custom-pagination"
-      />
+      />}
     </div>
   );
 };

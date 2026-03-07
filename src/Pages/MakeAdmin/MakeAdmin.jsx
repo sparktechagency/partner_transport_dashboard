@@ -10,6 +10,7 @@ import { useDeleteAdminMutation, useGetAllAdminQuery } from '../../redux/api/mak
 import { toast } from 'sonner'
 import { imageUrl } from '../../redux/api/baseApi'
 import { EditAdminModal } from '../../Components/Shared/EditAdminModal'
+import Loading from '../../Components/Loading/Loading'
 
 
 
@@ -18,7 +19,7 @@ const MakeAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [id, setId] = useState('')
   const [authId , setAuthId] = useState('')
-  const { data: getAllAdmin } = useGetAllAdminQuery({ page, searchTerm })
+  const { data: getAllAdmin, isLoading } = useGetAllAdminQuery({ page, searchTerm })
   const [deleteAdmin] = useDeleteAdminMutation()
   // console.log(getAllAdmin?.data?.meta);
 
@@ -119,13 +120,13 @@ const MakeAdmin = () => {
       <div>
         <button onClick={() => setOpenModal(true)} className='bg-black text-white rounded-full flex items-center gap-2 p-2 px-8 mt-5'><IoIosAdd /><span>Make Admin</span></button>
 
-        <Table
+        {isLoading ? <Loading type="table" /> : <Table
           columns={columns}
           dataSource={data}
           className="custom-pagination"
           pagination={false}
           rowKey="key"
-        />
+        />}
         <div className='flex items-center justify-center mt-3'>
           <Pagination
             onChange={(page) => setPage(page)}

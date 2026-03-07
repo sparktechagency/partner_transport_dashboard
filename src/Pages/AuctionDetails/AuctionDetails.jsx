@@ -13,13 +13,14 @@ import { useParams } from "react-router-dom";
 import { useGetAuctionManagementDetailsQuery } from "../../redux/api/auctionManagementApi";
 import { imageUrl } from "../../redux/api/baseApi";
 import { Image } from "antd";
-import { LoadScript } from "@react-google-maps/api";
+import Loading from '../../Components/Loading/Loading';
+
 
 const AuctionDetails = () => {
   const [googleApiLoaded, setGoogleApiLoaded] = useState(false);
 
   const { id } = useParams();
-  const { data: getAuctionDetails } = useGetAuctionManagementDetailsQuery(id);
+  const { data: getAuctionDetails, isLoading } = useGetAuctionManagementDetailsQuery(id);
 
   console.log(getAuctionDetails?.data?.result?.confirmedPartner);
 
@@ -33,7 +34,7 @@ const AuctionDetails = () => {
     <div className="bg-white rounded-md p-5">
       <PageName name={"Auction Details"} />
 
-      <div className="max-w-4xl mx-auto mt-10">
+      {isLoading ? <Loading type="detail" /> : <div className="max-w-4xl mx-auto mt-10">
         <div>
           <p>Items Image</p>
           <div className="flex items-center  justify-between mt-5 gap-5 ">
@@ -243,7 +244,7 @@ const AuctionDetails = () => {
             })}
           </Swiper>
         </div>
-      </div>
+      </div>}
       <div>{/* <MapComponent/> */}</div>
 
       <MapComponent

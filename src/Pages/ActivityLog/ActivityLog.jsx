@@ -1,4 +1,5 @@
 import { DatePicker, Select } from 'antd'
+import Loading from '../../Components/Loading/Loading'
 import React, { useState } from 'react'
 import { CiSearch } from 'react-icons/ci';
 import { FaArrowLeft } from 'react-icons/fa';
@@ -14,7 +15,7 @@ const ActivityLog = () => {
     const [date, setDate] = useState('')
     const [type, setActionType] = useState('')
     const [status, setStatus] = useState('')
-    const { data: getActivityLog } = useGetAllActivityQuery({ page, searchTerm, email, date, type, status })
+    const { data: getActivityLog, isLoading } = useGetAllActivityQuery({ page, searchTerm, email, date, type, status })
     const { data: getAllAdmin } = useGetAllAdminQuery()
 
 
@@ -150,7 +151,7 @@ const ActivityLog = () => {
                 </div>
             </div>
             <div>
-                <ActivityLogTable dataSource={dataSource} setPage={setPage} metaData={getActivityLog?.data?.meta} />
+                {isLoading ? <Loading type="table" /> : <ActivityLogTable dataSource={dataSource} setPage={setPage} metaData={getActivityLog?.data?.meta} />}
             </div>
         </div>
     )

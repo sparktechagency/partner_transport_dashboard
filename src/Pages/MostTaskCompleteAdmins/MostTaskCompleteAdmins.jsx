@@ -5,10 +5,11 @@ import MostTaskCompleteAdminTable from '../../Components/MostTaskCompleteAdminTa
 import { useGetMostTaskCompletedAdminsQuery } from '../../redux/api/auditDashboardApi'
 import { imageUrl } from '../../redux/api/baseApi'
 import { Pagination } from 'antd'
+import Loading from '../../Components/Loading/Loading'
 const MostTaskCompleteAdmins = () => {
     const [page, setPage] = useState(1)
     const [searchTerm, setSearchTerm] = useState("")
-    const { data : getMostTaskAdmin} = useGetMostTaskCompletedAdminsQuery({page, searchTerm})
+    const { data : getMostTaskAdmin, isLoading} = useGetMostTaskCompletedAdminsQuery({page, searchTerm})
 
     const dataSource = getMostTaskAdmin?.data?.data?.slice(0,3)?.map((user, i)=>{
         return (
@@ -44,7 +45,7 @@ const MostTaskCompleteAdmins = () => {
                     </div>
                 </div>
             </div>
-            <MostTaskCompleteAdminTable dataSource={dataSource} pagination={false}  />
+            {isLoading ? <Loading type="table" /> : <MostTaskCompleteAdminTable dataSource={dataSource} pagination={false}  />}
             <div className='flex justify-center'>
                 <Pagination 
                  onChange={(page)=> setPage(page)}
