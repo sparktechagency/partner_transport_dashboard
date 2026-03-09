@@ -60,6 +60,8 @@ function App() {
         // passport: 759175632578,
         location: partner?.country,
         status : partner?.status,
+        city: partner?.city,
+        address: `${partner?.city || ""}, ${partner?.country || ""}, ${partner?.status || ""}`,
         vehicleFrontImage : `${imageUrl}${partner?.vehicleFrontImage}`,
         vehicleBackImage : `${imageUrl}${partner?.vehicleBackImage}`,
         vehicleSideImage :  `${imageUrl}${partner?.vehicleSideImage}`,

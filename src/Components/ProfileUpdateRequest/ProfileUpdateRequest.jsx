@@ -10,15 +10,12 @@ const ProfileUpdateRequest = ({ dataSource }) => {
     // approved api
     const [approvedDeclinePartner] = useApprovedDeclinePartnerMutation()
 
-
-
-  console.log("=== requestUser ====",requestUser);
+    console.log("=== requestUser ====", requestUser);
 
     const handleShowRequestUserDelails = (data) => {
         setIsModalOpen(true)
         setRequestuser(data)
     }
-
 
     // -----handle approved user function ----//
     const handleApproved = (email) => {
@@ -143,7 +140,7 @@ const ProfileUpdateRequest = ({ dataSource }) => {
                         </div>
                         <div className='flex justify-between items-center'>
                             <p className='font-semibold mt-5'>Location:</p>
-                            <p>{requestUser?.location}</p>
+                            <p>{requestUser?.address}</p>
                         </div>
                         {/* <div className='flex justify-between items-center'>
                             <p className='font-semibold mt-5'>Vehicle Type:</p>
@@ -165,13 +162,12 @@ const ProfileUpdateRequest = ({ dataSource }) => {
                                 <Image src={requestUser?.vehicleSideImage} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" />
                             </div>
                         </div>
-                        <div className='grid grid-cols-2 gap-5'>
+                        <div className='grid grid-cols-2 gap-5 mt-2'>
                             <div className='w-full my-2 '>
                                 <p className='my-2 font-medium text-xl'>Vehicle license plate:</p>
                                 <Image className='h-36 w-60 px-5' width={250} height={180} src={requestUser?.licensePlateImage} preview alt="" />
                                 <p className='my-5 font-medium text-xl'>Vehicle insurance photo:</p>
                                 <Image className=' px-5 h-36 w-60' width={250} height={180} src={requestUser?.vehicleInsuranceImage} preview alt="" />
-
                             </div>
                             <div className='w-full my-2'>
                                 <p className='my-2 font-medium text-xl'>Driving License:</p>
@@ -181,8 +177,6 @@ const ProfileUpdateRequest = ({ dataSource }) => {
 
                             </div>
                         </div>
-
-
                     </div>
                 </div>
 
