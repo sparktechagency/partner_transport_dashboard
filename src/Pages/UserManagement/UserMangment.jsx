@@ -15,6 +15,7 @@ import { useBlockUnBlockUserMutation, useDeleteUserMutation, useGetAllUserQuery,
 import { imageUrl } from '../../redux/api/baseApi'
 import { toast } from 'sonner'
 import { useGetAdminProfileQuery } from '../../redux/api/authApi'
+import Loading from '../../Components/Loading/Loading'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 const UserManagement = () => {
   const [page, setPage] = useState(1)
@@ -27,7 +28,7 @@ const UserManagement = () => {
   const [sendAllChecked, setSendAllChecked] = useState(false)
   const [sendNoticeId, setSendNoticeId] = useState('')
   // api endpoints
-  const { data: getAllUser } = useGetAllUserQuery({ searchTerms, page })
+  const { data: getAllUser, isLoading } = useGetAllUserQuery({ searchTerms, page })
   const [deleteUser] = useDeleteUserMutation()
   const [blockUnblockUser] = useBlockUnBlockUserMutation()
   const { data: userId } = useGetAdminProfileQuery()
@@ -244,7 +245,7 @@ const UserManagement = () => {
 
       {/* User Management table */}
       <div className='mt-5'>
-        <Table dataSource={tableData} columns={columns} className="custom-pagination" pagination={false} />
+        {isLoading ? <Loading type="table" /> : <Table dataSource={tableData} columns={columns} className="custom-pagination" pagination={false} />}
         <div className='flex  items-center justify-center mt-5'>
           <Pagination
             onChange={(page) => setPage(page)}
