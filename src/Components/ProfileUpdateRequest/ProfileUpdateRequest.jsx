@@ -161,7 +161,7 @@ const ProfileUpdateRequest = ({ dataSource }) => {
                             <p className='font-semibold mt-5'>Vehicle Photo:</p>
                             <div className='flex items-center gap-2'>
                                 <Image src={requestUser?.vehicleFrontImage} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" />
-                                {/* <Image src={requestUser?.vehicleBackImag} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" /> */}
+                                <Image src={requestUser?.vehicleBackImage} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" />
                                 <Image src={requestUser?.vehicleSideImage} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" />
                             </div>
                         </div>

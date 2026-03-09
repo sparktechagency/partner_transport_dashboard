@@ -61,7 +61,7 @@ function App() {
         location: partner?.country,
         status : partner?.status,
         vehicleFrontImage : `${imageUrl}${partner?.vehicleFrontImage}`,
-        vehicleBackImag : `${imageUrl}${partner?.vehicleBackImag}`,
+        vehicleBackImage : `${imageUrl}${partner?.vehicleBackImage}`,
         vehicleSideImage :  `${imageUrl}${partner?.vehicleSideImage}`,
         licensePlateImage : `${imageUrl}${partner?.licensePlateImage}`,
         drivingLicenseImage :`${imageUrl}${partner?.drivingLicenseImage}`,
