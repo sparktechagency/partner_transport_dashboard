@@ -56,7 +56,7 @@ const ProfileUpdateRequest = ({ dataSource }) => {
                 return (
                     <div className="flex items-center gap-2">
                         <Image
-                            src={`${imageUrl}${record?.img}`}
+                            src={`${imageUrl}${record?.profile_image}`}
                             className="w-[40px] h-[40px] rounded-[8px]"
                             width={40}
                             height={40}
@@ -76,8 +76,8 @@ const ProfileUpdateRequest = ({ dataSource }) => {
 
         {
             title: "Contact Number",
-            dataIndex: "contact",
-            key: "contact  ",
+            dataIndex: "phone_number",
+            key: "phone_number",
         },
         // {
         //     title: "NID/Passport No",
@@ -132,17 +132,17 @@ const ProfileUpdateRequest = ({ dataSource }) => {
             <Table dataSource={dataSource} columns={columns} className="custom-pagination" pagination={false} />
             <Modal open={isModalOpen} centered footer={false} onCancel={() => setIsModalOpen(false)} width={600} >
                 <div className='flex flex-col items-center justify-center '>
-                    <Image src={`${imageUrl}${requestUser.img}`} className='w-[80px] h-[80px] rounded-full' width={80} height={80} preview alt="" />
+                    <Image src={`${imageUrl}${requestUser.profile_image}`} className='w-[80px] h-[80px] rounded-full' width={80} height={80} preview alt="" />
                     <p className='mt-5 font-semibold text-2xl'>{requestUser?.name}</p>
                     <p>{requestUser?.email}</p>
                     <div className='w-full'>
                         <div className='flex justify-between items-center'>
                             <p className='font-semibold mt-5'>Phone Number:</p>
-                            <p>{requestUser?.contact}</p>
+                            <p>{requestUser?.phone_number}</p>
                         </div>
                         <div className='flex justify-between items-center'>
                             <p className='font-semibold mt-5'>Location:</p>
-                            <p>{requestUser?.location}</p>
+                            <p>{requestUser?.city}, {requestUser?.state}, {requestUser?.country}</p>
                         </div>
                         {/* <div className='flex justify-between items-center'>
                             <p className='font-semibold mt-5'>Vehicle Type:</p>
@@ -173,8 +173,8 @@ const ProfileUpdateRequest = ({ dataSource }) => {
 
                             </div>
                             <div className='w-full my-2'>
-                                <p className='my-2 font-medium text-xl'>Vehicle license :</p>
-                                <Image className=' px-5 h-36 w-60' width={250} height={180} src={`${imageUrl}${requestUser?.licensePlateImage}`} preview alt="" />
+                                <p className='my-2 font-medium text-xl'>Driving License:</p>
+                                <Image className=' px-5 h-36 w-60' width={250} height={180} src={`${imageUrl}${requestUser?.drivingLicenseImage}`} preview alt="" />
                                 <p className='my-5 font-medium text-xl'>Vehicle registration Card:</p>
                                 <Image className=' px-5 h-36 w-60' width={250} height={180} src={`${imageUrl}${requestUser?.vehicleRegistrationCardImage}`} preview alt="" />
 
