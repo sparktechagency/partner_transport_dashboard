@@ -161,7 +161,7 @@ const ProfileUpdateRequest = ({ dataSource }) => {
                             <p className='font-semibold mt-5'>Vehicle Photo:</p>
                             <div className='flex items-center gap-2'>
                                 <Image src={requestUser?.vehicleFrontImage} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" />
-                                <Image src={requestUser?.vehicleBackImag} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" />
+                                {/* <Image src={requestUser?.vehicleBackImag} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" /> */}
                                 <Image src={requestUser?.vehicleSideImage} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" />
                             </div>
                         </div>
@@ -169,17 +169,8 @@ const ProfileUpdateRequest = ({ dataSource }) => {
                             <div className='w-full my-2 '>
                                 <p className='my-2 font-medium text-xl'>Vehicle license plate:</p>
                                 <Image className='h-36 w-60 px-5' width={250} height={180} src={requestUser?.licensePlateImage} preview alt="" />
-                                
-                                {
-                                    
-                                    requestUser?.vehicleInsuranceImage &&
-                                    <>
-                                      <p className='my-5 font-medium text-xl'>Vehicle insurance photo:</p>
-                                     <Image className=' px-5 h-36 w-60' width={250} height={180} src={requestUser?.vehicleInsuranceImage} preview alt="" />
-                                    </>
-                                    
-                                }
-                               
+                                <p className='my-5 font-medium text-xl'>Vehicle insurance photo:</p>
+                                <Image className=' px-5 h-36 w-60' width={250} height={180} src={requestUser?.vehicleInsuranceImage} preview alt="" />
 
                             </div>
                             <div className='w-full my-2'>
