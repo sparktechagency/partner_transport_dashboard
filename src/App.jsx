@@ -45,6 +45,7 @@ function App() {
   // table data 
   const formattedTableData = getPendingPartner?.data?.data?.slice(0,4)?.map((partner, i) => {
     // console.log(partner);
+        console.log("=== getPendingPartner ===",partner, i);
     return (
       {
         key: i + 1,
