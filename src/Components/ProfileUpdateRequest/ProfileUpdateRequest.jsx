@@ -169,8 +169,17 @@ const ProfileUpdateRequest = ({ dataSource }) => {
                             <div className='w-full my-2 '>
                                 <p className='my-2 font-medium text-xl'>Vehicle license plate:</p>
                                 <Image className='h-36 w-60 px-5' width={250} height={180} src={requestUser?.licensePlateImage} preview alt="" />
-                                <p className='my-5 font-medium text-xl'>Vehicle insurance photo:</p>
-                                <Image className=' px-5 h-36 w-60' width={250} height={180} src={requestUser?.vehicleInsuranceImage} preview alt="" />
+                                
+                                {
+                                    
+                                    requestUser?.vehicleInsuranceImage &&
+                                    <>
+                                      <p className='my-5 font-medium text-xl'>Vehicle insurance photo:</p>
+                                     <Image className=' px-5 h-36 w-60' width={250} height={180} src={requestUser?.vehicleInsuranceImage} preview alt="" />
+                                    </>
+                                    
+                                }
+                               
 
                             </div>
                             <div className='w-full my-2'>
