@@ -38,7 +38,7 @@ const UserManagement = () => {
   let receiverId = userId?.data?._id
 
   // console.log(receiverId);
-  const { data: getMessage , isLoading} = useGetMessageQuery({ senderId: sendNoticeId, receiverId: userId?.data?._id })
+  const { data: getMessage , isLoading: isLoadingMessage} = useGetMessageQuery({ senderId: sendNoticeId, receiverId: userId?.data?._id })
   const onChange = (checked) => {
     const data = {
       role: checked?.role,

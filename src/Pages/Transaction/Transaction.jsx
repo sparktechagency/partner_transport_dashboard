@@ -26,7 +26,7 @@ const Transaction = () => {
   const { data: getAllTransaction, isLoading } = useGetAllTransactionQuery({ page, searchTerm })
   // console.log(getAllTransaction?.data?.result);
 
-  const { data: getConversation, isLoading, error } = useGetConversationQuery({ senderId, receiverId });
+  const { data: getConversation, isLoading: isLoadingConversation, error } = useGetConversationQuery({ senderId, receiverId });
 
 
   const columns = [
