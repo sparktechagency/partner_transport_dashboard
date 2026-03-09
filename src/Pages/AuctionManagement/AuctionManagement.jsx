@@ -14,6 +14,7 @@ import {
 } from "../../redux/api/auctionManagementApi";
 import { imageUrl } from "../../redux/api/baseApi";
 import { useGetAllVariableQuery } from "../../redux/api/variableManagementApi";
+import Loading from "../../Components/Loading/Loading";
 import { render } from "react-dom";
 
 const AuctionManagement = () => {
@@ -31,7 +32,7 @@ const AuctionManagement = () => {
   const { data: allVariables } = useGetAllVariableQuery()
   const dollarToPeso = allVariables?.data?.perDollarMexicanPeso || 20;
 
-  const { data: getAllAuction } = useGetAllAuctionQuery({
+  const { data: getAllAuction, isLoading } = useGetAllAuctionQuery({
     auctionStatus,
     page,
     itemType,
@@ -57,7 +58,7 @@ const AuctionManagement = () => {
 
   const {
     data: getConversation,
-    isLoading,
+    isLoading: isLoadingConversation,
     error,
   } = useGetConversationQuery({ senderId, receiverId });
 
@@ -404,11 +405,11 @@ const AuctionManagement = () => {
 
       {/* Auction Table data */}
       <div className="mt-8">
-        <Table
+        {isLoading ? <Loading type="table" /> : <Table
           columns={columns}
           dataSource={formattedTableData}
           pagination={false}
-        />
+        />}
         <div className="flex  justify-center items-center bg-white py-5">
           <Pagination
             total={getAllAuction?.data?.meta?.total || 1}
