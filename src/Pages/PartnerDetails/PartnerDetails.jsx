@@ -13,6 +13,17 @@ const PartnerDetails = () => {
     console.log(getPartnerDetails?.data?.country);
 
     const [basicInfo, setBasicInfo] = useState(true)
+
+    const partner = getPartnerDetails?.data;
+
+const fullAddress = [
+  partner?.street,
+  partner?.exterior_number,
+  partner?.interior_number,
+  partner?.city,
+  partner?.state,
+  partner?.country
+].filter(Boolean).join(", ");
     return (
         <div className=' bg-white p-5 rounded-md'>
             <div className='flex  items-center gap-2 '>
@@ -78,7 +89,7 @@ const PartnerDetails = () => {
                         <p className='flex items-center justify-between'><span className=''>Date of Birth:</span> <span className='text-gray-500'>{getPartnerDetails?.data?.date_of_birth}</span></p>
                         {/* <p className='flex items-center justify-between'><span className=''>Business Name:</span> <span className='text-gray-500'>Governance Structure</span></p>
                         <p className='flex items-center justify-between'><span className=''>Website:</span> <span className='text-gray-500'>www.google.com</span></p> */}
-                        <p>Address </p>
+                        <p>Address: {fullAddress || "N/A"} </p>
                         {/* <p className='flex items-center justify-between'><span className=''>Line 1 :</span> <span className='text-gray-500'>{getPartnerDetails?.data?.routing_number}</span></p> */}
                         <p className='flex items-center justify-between'><span className=''>City :</span> <span className='text-gray-500'>{getPartnerDetails?.data?.city}</span></p>
                         <p className='flex items-center justify-between'><span className=''>State :</span> <span className='text-gray-500'>{getPartnerDetails?.data?.state}</span></p>
