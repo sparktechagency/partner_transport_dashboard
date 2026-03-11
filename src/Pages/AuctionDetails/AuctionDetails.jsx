@@ -53,11 +53,7 @@ const AuctionDetails = () => {
             </Image.PreviewGroup>
           </div>
         </div>
-        <div className="mt-5 space-y-2">
-          {/* <div className='flex items-center justify-between'>
-                        <p >Route & Status</p>
-                        <p className='text-[#007BFF] font-semibold cursor-pointer' onClick={() => setOpenMapModal(true)}>View Route Map</p>
-                    </div> */}
+        <div className="mt-5 space-y-2"> 
           <div className="flex items-center justify-between">
             <p className="font-medium">User Name : </p>
             <p>{getAuctionDetails?.data?.result?.confirmedPartner?.name}</p>
@@ -155,9 +151,9 @@ const AuctionDetails = () => {
         )}
 
         {/* Delivered Images */}
-        {getAuctionDetails?.data?.result?.deliveredImages?.length > 0 && (
-          <div className="mt-10">
-            <p className="text-xl font-semibold">Delivered Images</p>
+        <div className="mt-10">
+          <p className="text-xl font-semibold">Delivered Images</p>
+          {getAuctionDetails?.data?.result?.deliveredImages?.length > 0 ? (
             <div className="flex flex-wrap gap-5 mt-5">
               <Image.PreviewGroup>
                 {getAuctionDetails?.data?.result?.deliveredImages?.map((img, i) => (
@@ -173,8 +169,10 @@ const AuctionDetails = () => {
                 ))}
               </Image.PreviewGroup>
             </div>
-          </div>
-        )}
+          ) : (
+            <p className="text-gray-500 mt-3">No delivered images yet</p>
+          )}
+        </div>
 
         {/* Winner section */}
         <p className=" mt-10 text-xl font-semibold">Winning Partner</p>
