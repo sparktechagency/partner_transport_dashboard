@@ -39,6 +39,15 @@ const partnerManagementApi = baseApi.injectEndpoints({
             invalidatesTags : ['partner']
         }),
 
+        getPartnerReviews : builder.query({
+            query : (partnerId)=>{
+                return {
+                    url : `/services/review-partner?partnerId=${partnerId}`,
+                    method : 'GET'
+                }
+            }
+        }),
+
         SendNoticePartner :  builder.mutation({
             query : ({data , sendAllChecked ,sendNoticeId})=>{
                 let url = "/dashboard/notice/partner"
@@ -57,4 +66,4 @@ const partnerManagementApi = baseApi.injectEndpoints({
     })
 })
 
-export const {useGetAllPartnerQuery , useGetPartnerDetailsQuery , useBlockUnBlockPartnerMutation , useSendNoticePartnerMutation , useDeletePartnerMutation} = partnerManagementApi;
+export const {useGetAllPartnerQuery , useGetPartnerDetailsQuery , useGetPartnerReviewsQuery , useBlockUnBlockPartnerMutation , useSendNoticePartnerMutation , useDeletePartnerMutation} = partnerManagementApi;
