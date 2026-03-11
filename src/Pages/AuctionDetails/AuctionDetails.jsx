@@ -132,6 +132,50 @@ const AuctionDetails = () => {
           </p>
         </div>
 
+        {/* Goods Loaded Images */}
+        {getAuctionDetails?.data?.result?.goodsLoadedImages?.length > 0 && (
+          <div className="mt-10">
+            <p className="text-xl font-semibold">Goods Loaded Images</p>
+            <div className="flex flex-wrap gap-5 mt-5">
+              <Image.PreviewGroup>
+                {getAuctionDetails?.data?.result?.goodsLoadedImages?.map((img, i) => (
+                  <Image
+                    key={i}
+                    src={`${imageUrl}${img}`}
+                    alt={`goods-loaded-${i}`}
+                    width={250}
+                    height={144}
+                    style={{ borderRadius: "8px", objectFit: "cover" }}
+                    preview={{ mask: "Click to preview" }}
+                  />
+                ))}
+              </Image.PreviewGroup>
+            </div>
+          </div>
+        )}
+
+        {/* Delivered Images */}
+        {getAuctionDetails?.data?.result?.deliveredImages?.length > 0 && (
+          <div className="mt-10">
+            <p className="text-xl font-semibold">Delivered Images</p>
+            <div className="flex flex-wrap gap-5 mt-5">
+              <Image.PreviewGroup>
+                {getAuctionDetails?.data?.result?.deliveredImages?.map((img, i) => (
+                  <Image
+                    key={i}
+                    src={`${imageUrl}${img}`}
+                    alt={`delivered-${i}`}
+                    width={250}
+                    height={144}
+                    style={{ borderRadius: "8px", objectFit: "cover" }}
+                    preview={{ mask: "Click to preview" }}
+                  />
+                ))}
+              </Image.PreviewGroup>
+            </div>
+          </div>
+        )}
+
         {/* Winner section */}
         <p className=" mt-10 text-xl font-semibold">Winning Partner</p>
         {getAuctionDetails?.data?.result?.confirmedPartner ? (
