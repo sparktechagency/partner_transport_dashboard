@@ -45,6 +45,7 @@ function App() {
   // table data 
   const formattedTableData = getPendingPartner?.data?.data?.slice(0,4)?.map((partner, i) => {
     // console.log(partner);
+        console.log("=== getPendingPartner ===",partner, i);
     return (
       {
         key: i + 1,
@@ -59,8 +60,10 @@ function App() {
         // passport: 759175632578,
         location: partner?.country,
         status : partner?.status,
+        city: partner?.city,
+        address: `${partner?.city || ""}, ${partner?.country || ""}, ${partner?.status || ""}`,
         vehicleFrontImage : `${imageUrl}${partner?.vehicleFrontImage}`,
-        vehicleBackImag : `${imageUrl}${partner?.vehicleBackImag}`,
+        vehicleBackImage : `${imageUrl}${partner?.vehicleBackImage}`,
         vehicleSideImage :  `${imageUrl}${partner?.vehicleSideImage}`,
         licensePlateImage : `${imageUrl}${partner?.licensePlateImage}`,
         drivingLicenseImage :`${imageUrl}${partner?.drivingLicenseImage}`,

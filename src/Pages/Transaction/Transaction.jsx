@@ -10,6 +10,7 @@ import { useGetAllTransactionQuery } from '../../redux/api/transactionApi'
 import { imageUrl } from '../../redux/api/baseApi'
 import { useGetConversationQuery } from '../../redux/api/auctionManagementApi'
 import { useGetAllVariableQuery } from '../../redux/api/variableManagementApi'
+import Loading from '../../Components/Loading/Loading'
 import { render } from 'react-dom'
 const Transaction = () => {
   const [page, setPage] = useState(1)
@@ -22,10 +23,10 @@ const Transaction = () => {
   //-------- transaction all api ---------//
   const { data: allVariables } = useGetAllVariableQuery()
   const perDollarMexicanPeso = allVariables?.data?.perDollarMexicanPeso || 20
-  const { data: getAllTransaction } = useGetAllTransactionQuery({ page, searchTerm })
+  const { data: getAllTransaction, isLoading } = useGetAllTransactionQuery({ page, searchTerm })
   // console.log(getAllTransaction?.data?.result);
 
-  const { data: getConversation, isLoading, error } = useGetConversationQuery({ senderId, receiverId });
+  const { data: getConversation, isLoading: isLoadingConversation, error } = useGetConversationQuery({ senderId, receiverId });
 
 
   const columns = [
@@ -172,11 +173,11 @@ const Transaction = () => {
 
 
       <div className='mt-5'>
-        <Table title={() => (
+        {isLoading ? <Loading type="table" /> : <Table title={() => (
           <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '16px' }}>
 
           </div>
-        )} className="custom-pagination" columns={columns} dataSource={formattedTableData} pagination={false} />
+        )} className="custom-pagination" columns={columns} dataSource={formattedTableData} pagination={false} />}
         <div className='flex justify-center mt-4'>
           <Pagination
             onChange={(page) => setPage(page)}

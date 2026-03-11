@@ -1,4 +1,4 @@
-import { Modal, Table } from 'antd';
+import { Modal, Table, Image } from 'antd';
 import React, { useState } from 'react'
 import { IoEyeOutline } from 'react-icons/io5';
 import { useApprovedDeclinePartnerMutation } from '../../redux/api/dashboardHomeApi';
@@ -10,13 +10,12 @@ const ProfileUpdateRequest = ({ dataSource }) => {
     // approved api
     const [approvedDeclinePartner] = useApprovedDeclinePartnerMutation()
 
-
+    console.log("=== requestUser ====", requestUser);
 
     const handleShowRequestUserDelails = (data) => {
         setIsModalOpen(true)
         setRequestuser(data)
     }
-
 
     // -----handle approved user function ----//
     const handleApproved = (email) => {
@@ -54,9 +53,12 @@ const ProfileUpdateRequest = ({ dataSource }) => {
             render: (_, record) => {
                 return (
                     <div className="flex items-center gap-2">
-                        <img
+                        <Image
                             src={record?.img}
                             className="w-[40px] h-[40px] rounded-[8px]"
+                            width={40}
+                            height={40}
+                            preview={false}
                             alt=""
                         />
                         <p className="font-medium">{record?.name}</p>
@@ -73,7 +75,7 @@ const ProfileUpdateRequest = ({ dataSource }) => {
         {
             title: "Contact Number",
             dataIndex: "contact",
-            key: "contact  ",
+            key: "contact",
         },
         // {
         //     title: "NID/Passport No",
@@ -128,7 +130,7 @@ const ProfileUpdateRequest = ({ dataSource }) => {
             <Table dataSource={dataSource} columns={columns} className="custom-pagination" pagination={false} />
             <Modal open={isModalOpen} centered footer={false} onCancel={() => setIsModalOpen(false)} width={600} >
                 <div className='flex flex-col items-center justify-center '>
-                    <img src={requestUser.img} className='w-[80px] h-[80px] rounded-full' alt="" />
+                    <Image src={requestUser.img} className='w-[80px] h-[80px] rounded-full' width={80} height={80} preview alt="" />
                     <p className='mt-5 font-semibold text-2xl'>{requestUser?.name}</p>
                     <p>{requestUser?.email}</p>
                     <div className='w-full'>
@@ -138,7 +140,7 @@ const ProfileUpdateRequest = ({ dataSource }) => {
                         </div>
                         <div className='flex justify-between items-center'>
                             <p className='font-semibold mt-5'>Location:</p>
-                            <p>{requestUser?.location}</p>
+                            <p>{requestUser?.address}</p>
                         </div>
                         {/* <div className='flex justify-between items-center'>
                             <p className='font-semibold mt-5'>Vehicle Type:</p>
@@ -155,29 +157,26 @@ const ProfileUpdateRequest = ({ dataSource }) => {
                         <div className=''>
                             <p className='font-semibold mt-5'>Vehicle Photo:</p>
                             <div className='flex items-center gap-2'>
-                                <img src={requestUser?.vehicleFrontImage} className='mx-auto mt-5 h-40 w-40' alt="" />
-                                <img src={requestUser?.vehicleBackImag} className='mx-auto mt-5 h-40 w-40' alt="" />
-                                <img src={requestUser?.vehicleSideImage} className='mx-auto mt-5 h-40 w-40' alt="" />
+                                <Image src={requestUser?.vehicleFrontImage} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" />
+                                <Image src={requestUser?.vehicleBackImage} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" />
+                                <Image src={requestUser?.vehicleSideImage} className='mx-auto mt-5 h-40 w-40' width={180} height={180} preview alt="" />
                             </div>
                         </div>
-                        <div className='grid grid-cols-2 gap-5'>
+                        <div className='grid grid-cols-2 gap-5 mt-2'>
                             <div className='w-full my-2 '>
                                 <p className='my-2 font-medium text-xl'>Vehicle license plate:</p>
-                                <img className='h-36 w-60 px-5' src={requestUser?.licensePlateImage} alt="" />
+                                <Image className='h-36 w-60 px-5' width={250} height={180} src={requestUser?.licensePlateImage} preview alt="" />
                                 <p className='my-5 font-medium text-xl'>Vehicle insurance photo:</p>
-                                <img className=' px-5 h-36 w-60' src={requestUser?.vehicleInsuranceImage} alt="" />
-
+                                <Image className=' px-5 h-36 w-60' width={250} height={180} src={requestUser?.vehicleInsuranceImage} preview alt="" />
                             </div>
                             <div className='w-full my-2'>
-                                <p className='my-2 font-medium text-xl'>Vehicle license :</p>
-                                <img className=' px-5 h-36 w-60' src={requestUser?.licensePlateImage} alt="" />
+                                <p className='my-2 font-medium text-xl'>Driving License:</p>
+                                <Image className=' px-5 h-36 w-60' width={250} height={180} src={requestUser?.drivingLicenseImage} preview alt="" />
                                 <p className='my-5 font-medium text-xl'>Vehicle registration Card:</p>
-                                <img className=' px-5 h-36 w-60' src={requestUser?.vehicleRegistrationCardImage} alt="" />
+                                <Image className=' px-5 h-36 w-60' width={250} height={180} src={requestUser?.vehicleRegistrationCardImage} preview alt="" />
 
                             </div>
                         </div>
-
-
                     </div>
                 </div>
 
