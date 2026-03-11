@@ -1,5 +1,6 @@
 import { Modal } from "antd";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { io } from "socket.io-client";
 import { imageUrl } from "../../redux/api/baseApi";
 
 const ChatBubble = ({ message, getConversation, senderId }) => {
@@ -51,13 +52,49 @@ const ConversationModal = ({
   senderId,
   setConversationIds,
 }) => {
-  console.log(getConversation?.data?.conversation?.messages);
+  const [messages, setMessages] = useState([]);
+  const messagesEndRef = useRef(null);
+
+  // Sync initial messages from API data
+  useEffect(() => {
+    if (getConversation?.data?.conversation?.messages) {
+      setMessages([...getConversation.data.conversation.messages].reverse());
+    }
+  }, [getConversation]);
+
+  // Connect socket and listen for realtime messages
+  useEffect(() => {
+    if (!openConversationModal || !senderId) return;
+
+    const socket = io("https://backend.xmoveit.com/", {
+      query: { id: senderId, role: "ADMIN" },
+      transports: ["websocket"],
+    });
+
+    socket.on(`new-message/${senderId}`, (newMsg) => {
+      setMessages((prev) => {
+        const exists = prev.some((m) => m._id === newMsg._id || m.id === newMsg._id);
+        if (exists) return prev;
+        return [...prev, newMsg];
+      });
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [openConversationModal, senderId]);
+
+  // Auto-scroll to latest message
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div>
       <Modal
         onCancel={() => {
           setOpenConversationModal(false);
+          setMessages([]);
           // setConversationIds({})
         }}
         open={openConversationModal}
@@ -70,16 +107,15 @@ const ConversationModal = ({
         </div>
 
         <div className="p-6  mx-auto bg-white rounded-lg space-y-4 max-h-[80vh] overflow-y-auto">
-          {[...(getConversation?.data?.conversation?.messages || [])]
-            .reverse()
-            .map((msg) => (
+          {messages.map((msg) => (
               <ChatBubble
-                key={msg.id}
+                key={msg._id || msg.id}
                 message={msg}
                 getConversation={getConversation}
                 senderId={senderId}
               />
             ))}
+          <div ref={messagesEndRef} />
         </div>
       </Modal>
     </div>
